@@ -56,7 +56,9 @@ class PageAccueil extends StatelessWidget {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Image.asset('assets/images/news.jpg', width: 800, height: 200, fit: BoxFit.cover,
+          Image.asset(
+            'assets/images/news.jpg',
+            width: 800, height: 200, fit: BoxFit.cover,
           ),
           PartieTitre(),
           PartieTexte(),
@@ -84,12 +86,19 @@ class PartieTitre extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        width: double.infinity,
         padding: EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Bienvenue au Magazine Infos ", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black)),
-            Text("Votre magazine numérique, votre source d'inspiration", style: TextStyle(color: Colors.grey, fontStyle: FontStyle.italic)),
+            Text(
+                "Bienvenue au Magazine Infos ",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800, color: Colors.black)
+            ),
+            Text(
+                "Votre magazine numérique, votre source d'inspiration",
+                style: TextStyle(fontSize: 14, color: Colors.grey, fontStyle: FontStyle.italic)
+            ),
           ],
         )
     );
@@ -122,35 +131,37 @@ class PartieIcone extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+      padding: const EdgeInsets.only(bottom: 20),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                Icon(Icons.home, size: 30, color: Colors.pink),
+                Icon(Icons.home, color: Colors.pink),
+                Text("tel".toUpperCase(), style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
-                Text("TEL", style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
           Container(
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                Icon(Icons.mail, size: 30, color: Colors.pink),
+                Icon(Icons.mail, color: Colors.pink),
+                Text("Mail".toUpperCase(), style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
-                Text("MAIL", style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
           Container(
+            padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                Icon(Icons.share, size: 30, color: Colors.pink),
+                Icon(Icons.share, color: Colors.pink),
+                Text("Partage".toUpperCase(), style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
-                Text("PARTAGE", style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -166,13 +177,13 @@ class PartieRubrique extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Expanded(
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
                 child: Image.asset(
                   'assets/images/journal_one.png',
                   height: 150,
@@ -183,7 +194,7 @@ class PartieRubrique extends StatelessWidget {
             const SizedBox(width: 20),
             Expanded(
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
                 child: Image.asset(
                   'assets/images/journal_two.png',
                   height: 150,
