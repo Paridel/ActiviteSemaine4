@@ -36,11 +36,16 @@ class PageAccueil extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-        leading: IconButton(
-          icon: const Icon(Icons.menu),
-          color: Colors.white,
-          tooltip: 'Menu',
-          onPressed: () {
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              color: Colors.white,
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
           },
         ),
         actions: [
@@ -49,32 +54,125 @@ class PageAccueil extends StatelessWidget {
             color: Colors.white,
             tooltip: 'Recherche',
             onPressed: () {
+              showSearch(context: context, delegate: MySearchDelegate());
             },
           ),
         ],
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Image.asset(
-            'assets/images/news.jpg',
-            width: 800, height: 200, fit: BoxFit.cover,
-          ),
-          PartieTitre(),
-          PartieTexte(),
-          PartieIcone(),
-          PartieRubrique(),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            DrawerHeader(
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage('assets/images/journal_two.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+              child: Stack(
+                children: [
+                  Positioned(
+                    bottom: 8.0,
+                    left: 8.0,
+                    child: Text(
+                      '',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Accueil'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.account_circle),
+              title: const Text('Profile'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.settings),
+              title: const Text('Paramètres'),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.logout, color: Colors.red),
+              title: const Text(
+                'Se déconnecter',
+                style: TextStyle(color: Colors.red),
+              ),
+              onTap: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.bookmark_border), label: 'Favoris'),
+          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
         ],
+        selectedItemColor: Colors.pink,
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.asset(
+              'assets/images/news.jpg',
+              width: 800, fit: BoxFit.cover,
+            ),
+            PartieTitre(),
+            PartieTexte(),
+            PartieIcone(),
+            PartieRubrique(),
+          ],
+        ),
       ),
       floatingActionButton:
       FloatingActionButton(
           onPressed: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Tu as cliqué dessus')),
+            showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                      title: Text('Info'),
+                      content: Text('Tu as cliqué dessus'),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('VALIDER'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                        TextButton(
+                          child: const Text('ANNULER'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                  );
+                }
             );
           },
           backgroundColor: Colors.pink,
-          child: const Icon(Icons.home_outlined, color: Colors.white)
+          child: const Text('CLICK', style: TextStyle(color: Colors.white),),
       ),
     );
   }
@@ -139,7 +237,8 @@ class PartieIcone extends StatelessWidget {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                Icon(Icons.home, color: Colors.pink),
+                Icon(Icons.phone, color: Colors.pink,),
+                SizedBox(height: 5),
                 Text("tel".toUpperCase(), style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
               ],
@@ -150,6 +249,7 @@ class PartieIcone extends StatelessWidget {
             child: Column(
               children: [
                 Icon(Icons.mail, color: Colors.pink),
+                SizedBox(height: 5),
                 Text("Mail".toUpperCase(), style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
               ],
@@ -160,6 +260,7 @@ class PartieIcone extends StatelessWidget {
             child: Column(
               children: [
                 Icon(Icons.share, color: Colors.pink),
+                SizedBox(height: 5),
                 Text("Partage".toUpperCase(), style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold)),
                 SizedBox(height: 10),
               ],
@@ -178,32 +279,136 @@ class PartieRubrique extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        margin: EdgeInsets.only(bottom: 40),
+        child: Column(
           children: [
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  'assets/images/journal_one.png',
-                  height: 150,
-                  fit: BoxFit.cover,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      'assets/images/journal_one.png',
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      'assets/images/journal_two.png',
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 20),
-            Expanded(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.asset(
-                  'assets/images/journal_two.png',
-                  height: 150,
-                  fit: BoxFit.cover,
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      'assets/images/benzema.webp',
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
-              ),
+                const SizedBox(width: 20),
+                Expanded(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.asset(
+                      'assets/images/mariage.jpg',
+                      height: 150,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         )
+    );
+  }
+}
+
+class MySearchDelegate extends SearchDelegate {
+  final List<String> data = [
+    'L\'Observatoire',
+    'L\'Express',
+    'Argus Euros',
+    'Les Routiers',
+    'Le Monde du Camping-Car',
+    'Europe Échecs',
+    'Le Monde',
+    'Télérama',
+    'Technikart',
+  ];
+
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [
+      IconButton(
+        icon: const Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return IconButton(
+      icon: const Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // Implement how to display search results here
+    final List<String> results =
+    data
+        .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    return ListView.builder(
+      itemCount: results.length,
+      itemBuilder: (context, index) {
+        return ListTile(title: Text(results[index]));
+      },
+    );
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // Implement how to display search suggestions here
+    final List<String> suggestions =
+    data
+        .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+    return ListView.builder(
+      itemCount: suggestions.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(suggestions[index]),
+          onTap: () {
+            query = suggestions[index];
+            showResults(context);
+          },
+        );
+      },
     );
   }
 }
