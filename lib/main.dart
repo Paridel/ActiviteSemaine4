@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 
 void main() {
   runApp(const MonAppli());
@@ -31,9 +34,7 @@ class PageAccueil extends StatelessWidget {
         backgroundColor: Colors.deepPurple,
         title: const Text(
           'Magazine Infos',
-          style: TextStyle(
-              color: Colors.white
-          ),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         leading: Builder(
@@ -123,19 +124,28 @@ class PageAccueil extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.bookmark_border), label: 'Favoris'),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: 'Profile'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark_border),
+            label: 'Favoris',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            label: 'Profile',
+          ),
         ],
-        selectedItemColor: Colors.pink,
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Image.asset(
-              'assets/images/news.jpg',
-              width: 800, fit: BoxFit.cover,
+              'assets/images/bestnews.jpg',
+              width: 800,
+              fit: BoxFit.cover,
             ),
             PartieTitre(),
             PartieTexte(),
@@ -144,35 +154,34 @@ class PageAccueil extends StatelessWidget {
           ],
         ),
       ),
-      floatingActionButton:
-      FloatingActionButton(
-          onPressed: () {
-            showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                      title: Text('Info'),
-                      content: Text('Tu as cliqué dessus'),
-                      actions: <Widget>[
-                        TextButton(
-                          child: const Text('VALIDER'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        TextButton(
-                          child: const Text('ANNULER'),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ],
-                  );
-                }
-            );
-          },
-          backgroundColor: Colors.pink,
-          child: const Text('CLICK', style: TextStyle(color: Colors.white),),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Info'),
+                content: Text('Tu as cliqué dessus'),
+                actions: <Widget>[
+                  TextButton(
+                    child: const Text('VALIDER'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                  TextButton(
+                    child: const Text('ANNULER'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+        },
+        backgroundColor: Colors.deepPurple,
+        child: const Text('CLICK', style: TextStyle(color: Colors.white)),
       ),
     );
   }
@@ -184,41 +193,52 @@ class PartieTitre extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        width: double.infinity,
-        padding: EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-                "Bienvenue au Magazine Infos ",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w800, color: Colors.black)
+      width: double.infinity,
+      padding: EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Bienvenue au Magazine Infos ",
+            style: TextStyle(
+              fontSize: 25,
+              fontWeight: FontWeight.w800,
+              color: Colors.black,
             ),
-            Text(
-                "Votre magazine numérique, votre source d'inspiration",
-                style: TextStyle(fontSize: 14, color: Colors.grey, fontStyle: FontStyle.italic)
+          ),
+          Text(
+            "Votre magazine numérique, votre source d'inspiration",
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.deepPurple,
+              fontStyle: FontStyle.italic,
             ),
-          ],
-        )
+          ),
+        ],
+      ),
     );
   }
 }
 
 class PartieTexte extends StatelessWidget {
   const PartieTexte({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Magazine Infos est bien plus qu'un simple magazine d'informations. "
-                "C'est votre passerelle vers le monde, une source inestimable de "
-                "connaissances et d'actualités soigneusement sélectionnées pour vous éclairer sur "
-                "les enjeux mondiaux, la culture, la science, et voir même le divertissement (les jeux).",
-                style: TextStyle(color: Colors.black)),
-          ],
-        )
+      padding: const EdgeInsets.fromLTRB(20, 0, 20, 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Magazine Infos est bien plus qu'un simple magazine d'informations. "
+            "C'est votre passerelle vers le monde, une source inestimable de "
+            "connaissances et d'actualités soigneusement sélectionnées pour vous éclairer sur "
+            "les enjeux mondiaux, la culture, la science, et voir même le divertissement (les jeux).",
+            style: TextStyle(color: Colors.black),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -233,40 +253,94 @@ class PartieIcone extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Icon(Icons.phone, color: Colors.pink,),
-                SizedBox(height: 5),
-                Text("tel".toUpperCase(), style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold)),
-                SizedBox(height: 10),
-              ],
-            ),
+          _buildIconButton(
+            icon: Icons.phone,
+            label: "TEL",
+            onTap: () async {
+              final Uri phoneUri = Uri(scheme: 'tel', path: '+242069510362');
+              if (await canLaunchUrl(phoneUri)) {
+                await launchUrl(phoneUri);
+              } else {
+                print('Impossible d\'ouvrir le téléphone');
+              }
+            },
           ),
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Icon(Icons.mail, color: Colors.pink),
-                SizedBox(height: 5),
-                Text("Mail".toUpperCase(), style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold)),
-                SizedBox(height: 10),
-              ],
-            ),
+          _buildIconButton(
+            icon: Icons.mail,
+            label: "MAIL",
+            onTap: () async {
+              final Uri emailUri = Uri(
+                scheme: 'mailto',
+                path: 'paridel.makouala@gmail.com',
+                queryParameters: {'subject': 'Contact depuis l\'application'},
+              );
+              if (await canLaunchUrl(emailUri)) {
+                await launchUrl(emailUri);
+              }
+            },
           ),
-          Container(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Icon(Icons.share, color: Colors.pink),
-                SizedBox(height: 5),
-                Text("Partage".toUpperCase(), style: TextStyle(color: Colors.pink, fontWeight: FontWeight.bold)),
-                SizedBox(height: 10),
-              ],
-            ),
+          _buildIconButton(
+            icon: Icons.share,
+            label: "PARTAGE",
+            onTap: () {
+              Share.share(
+                'Découvrez la formation en développement mobile de DCLIC https://dclic.francophonie.org/',
+                subject: 'Partage depuis l\'app Magazine Infos',
+              );
+            },
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildIconButton({
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+  }) {
+    return InkWell(
+      onTap: () {
+        HapticFeedback.lightImpact();
+        onTap();
+      },
+      borderRadius: BorderRadius.circular(8),
+      splashColor: Colors.pink.withOpacity(0.0),
+      highlightColor: Colors.pink.withOpacity(0.0),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.grey[200],
+                borderRadius: BorderRadius.circular(10),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.0),
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+              child: Icon(icon, color: Colors.deepPurple, size: 28),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              style: const TextStyle(
+                color: Colors.deepPurple,
+                fontWeight: FontWeight.bold,
+                fontSize: 12,
+              ),
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }
@@ -278,65 +352,65 @@ class PartieRubrique extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        margin: EdgeInsets.only(bottom: 40),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      'assets/images/journal_one.png',
-                      height: 150,
-                      fit: BoxFit.cover,
-                    ),
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      margin: EdgeInsets.only(bottom: 40),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'assets/images/journal_one.png',
+                    height: 150,
+                    fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      'assets/images/journal_two.png',
-                      height: 150,
-                      fit: BoxFit.cover,
-                    ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'assets/images/journal_two.png',
+                    height: 150,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      'assets/images/benzema.webp',
-                      height: 150,
-                      fit: BoxFit.cover,
-                    ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'assets/images/benzema.webp',
+                    height: 150,
+                    fit: BoxFit.cover,
                   ),
                 ),
-                const SizedBox(width: 20),
-                Expanded(
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.asset(
-                      'assets/images/mariage.jpg',
-                      height: 150,
-                      fit: BoxFit.cover,
-                    ),
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    'assets/images/mariage.jpg',
+                    height: 150,
+                    fit: BoxFit.cover,
                   ),
                 ),
-              ],
-            ),
-          ],
-        )
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
@@ -380,9 +454,9 @@ class MySearchDelegate extends SearchDelegate {
   Widget buildResults(BuildContext context) {
     // Implement how to display search results here
     final List<String> results =
-    data
-        .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+        data
+            .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+            .toList();
     return ListView.builder(
       itemCount: results.length,
       itemBuilder: (context, index) {
@@ -395,9 +469,9 @@ class MySearchDelegate extends SearchDelegate {
   Widget buildSuggestions(BuildContext context) {
     // Implement how to display search suggestions here
     final List<String> suggestions =
-    data
-        .where((item) => item.toLowerCase().contains(query.toLowerCase()))
-        .toList();
+        data
+            .where((item) => item.toLowerCase().contains(query.toLowerCase()))
+            .toList();
     return ListView.builder(
       itemCount: suggestions.length,
       itemBuilder: (context, index) {
