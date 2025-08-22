@@ -77,9 +77,9 @@ class PageAccueil extends StatelessWidget {
                     bottom: 8.0,
                     left: 8.0,
                     child: Text(
-                      '',
+                      'Magazine Infos',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Colors.deepPurple,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
