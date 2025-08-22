@@ -67,7 +67,7 @@ class PageAccueil extends StatelessWidget {
             DrawerHeader(
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage('assets/images/journal_two.png'),
+                  image: AssetImage('assets/images/logoheader.jpg'),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -77,7 +77,7 @@ class PageAccueil extends StatelessWidget {
                     bottom: 8.0,
                     left: 8.0,
                     child: Text(
-                      'Magazine Infos',
+                      '',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 24,
@@ -110,10 +110,10 @@ class PageAccueil extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
+              leading: const Icon(Icons.logout, color: Colors.deepPurple),
               title: const Text(
                 'Se déconnecter',
-                style: TextStyle(color: Colors.red),
+                style: TextStyle(color: Colors.deepPurple),
               ),
               onTap: () {
                 Navigator.pop(context);
